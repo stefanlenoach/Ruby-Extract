@@ -1,8 +1,8 @@
-# Ruby/SQL Extract
+# Ruby-Extract
 
 ## Object Relational Mapping Inspired by Active Record
 
-Uses Ruby to generate SQL query code via meta-programming.
+Uses Ruby to generate SQL query code and extract data from database via meta-programming.
 
 ## Demo Instructions
 
@@ -32,10 +32,10 @@ Human.find(1).methods
 
 ##  Features
 
-- Creates SQL Object Classes relating to database tables.
+- Relates SQL Object Classes to database tables.
 - Prevents assignment of SQL Object Attributes which do not correspond to table columns.
 - Extends SQL Object Class to allow Searching through "WHERE" clause.
-- Further extends SQL Object Class to allow Associations through foreign keys.
+- Allows SQL Object Classes to have Associations through foreign keys.
 
 ## Libraries and Gems
 - ActiveSupport::Inflector
@@ -54,9 +54,19 @@ Cat.find(2) # => Finds Cat object with id = 2
 ```
 Cat.where(name: 'Garfield') #=> Finds Cat object with name 'Garfield'
 ```
-
 - #save
+```
+Cat.new(name: "Biscuit", owner_id: 1).save #=> Creates or updates cat and saves it to DB
+```
 - #belongs_to
+```
+Cat.find(3).human #=> Finds Human associated with Cat
+```
 - #has_many
+```
+Human.find(1).cats #=> Finds cats associated with human
+```
 - #has_one_through
-- #destroy
+```
+Cat.find(1).house #=> Finds House associated with Cat through Human
+```
