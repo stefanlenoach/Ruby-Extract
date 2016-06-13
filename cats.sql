@@ -23,24 +23,24 @@ CREATE TABLE houses (
 INSERT INTO
   cats (id, name, owner_id)
 VALUES
-  (1, "Garfield", 1),
-  (2, "Snowball", 2),
-  (3, "Coltrane", 2),
-  (4, "Isis", 3),
-  (5, "Top Cat", NULL);
+  (1, "Tyson", 1),
+  (2, "Rocco", 2),
+  (3, "Max", 2),
+  (4, "Hotdog", 3),
+  (5, "Goose", NULL);
 
 INSERT INTO
   humans (id, fname, lname, house_id)
 VALUES
-  (1, "John", "Arbuckle", 1),
-  (2, "Lisa", "Simpson", 2),
-  (3, "Selina", "Kyle", 3),
-  (4, "Bruce", "Wayne", 4);
+  (1, "Frank", "Reynolds", 1),
+  (2, "Dennis", "Reynolds", 2),
+  (3, "Rickity", "Cricket", 3),
+  (4, "Charlie", "Day", 4);
 
 INSERT INTO
   houses (id, address)
 VALUES
   (1, "711 Maple Street"),
   (2, "742 Evergreen Terrace"),
-  (3, "East End, Gotham City"),
-  (4, "Wayne Manor, Gotham City");
+  (3, "Paddy's Pub, PA"),
+  (4, "Paddy's Pub, PA");
