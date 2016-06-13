@@ -4,9 +4,9 @@ require 'byebug'
 
 module Searchable
   def where(params)
-    select_line = params.keys.map { |key| "#{key}" }.join(", ")
     where_line = params.keys.map { |key| "#{key} = ?"}.join(" AND ")
-    query = "SELECT #{select_line} FROM #{self.table_name} WHERE #{where_line}"
+    query = "SELECT * FROM #{self.table_name} WHERE #{where_line}"
+    
     parse_all(DBConnection.execute(query, params.values))
   end
 end
