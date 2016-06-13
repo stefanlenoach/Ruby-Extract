@@ -14,7 +14,6 @@ class SQLObject
 
   def self.finalize!
     self.columns.each do |name|
-
       define_method(name) do
         attributes[name]
       end
@@ -36,21 +35,19 @@ class SQLObject
 
   def self.all
     query = "SELECT * FROM #{table_name}"
-    result = DBConnection.execute(query)
-    self.parse_all(result)
+    results = DBConnection.execute(query)
+
+    self.parse_all(results)
   end
 
   def self.parse_all(results)
-    object = []
-    results.each do |result|
-      object << self.new(result)
-    end
-    object
+    results.map { |result| self.new(result) }
   end
 
   def self.find(id)
     query = "SELECT * FROM #{table_name} WHERE id = #{id}"
     result = DBConnection.execute(query)
+
     return nil if result.empty?
     self.new(result.first)
   end
@@ -67,41 +64,31 @@ class SQLObject
   end
 
   def attribute_values
-    query = "SELECT * FROM #{self.class.table_name}"
-    DBConnection.execute2(query).first.map do |col|
-      send(col)
-    end
+    self.class.columns.map { |col| send(col) }
   end
 
+  def save
+    self.id.nil? ? insert : update
+  end
+
+  private
+
   def insert
+    columns = self.class.columns.drop(1)
+    col_names = columns.map(&:to_s).join(",")
+    questions = (['?'] * columns.length).join(",")
 
-    query = "SELECT * FROM #{self.class.table_name}"
+    query = "INSERT INTO #{self.class.table_name} (#{col_names})
+    VALUES (#{questions})"
 
-    col_names = DBConnection.execute2(query).first
-    questions = ['?'] * col_names.length
-    col_names_joined = col_names.join(",")
-    questions_joined = questions.join(",")
-    vals = attribute_values
-
-    new_query = "INSERT INTO #{self.class.table_name} (#{col_names_joined})
-                  VALUES (#{questions_joined})"
-
-    DBConnection.execute(new_query , *attribute_values)
+    DBConnection.execute(query , *attribute_values.drop(1))
     self.id = DBConnection.last_insert_row_id
   end
 
   def update
-    query = "SELECT * FROM #{self.class.table_name}"
-    col_names = DBConnection.execute2(query).first
-    cols = col_names.map { |col| "#{col} = ?"}.join(", ")
+    cols = self.class.columns.map { |col| "#{col} = ?"}.join(", ")
 
     new_query = "UPDATE #{self.class.table_name} SET #{cols} WHERE id = #{self.id}"
     DBConnection.execute(new_query , *attribute_values)
-
-  end
-
-  def save
-    return insert if self.id.nil?
-    update
   end
 end
