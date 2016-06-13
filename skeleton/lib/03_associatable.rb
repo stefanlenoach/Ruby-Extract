@@ -36,9 +36,9 @@ end
 class HasManyOptions < AssocOptions
   def initialize(name, self_class_name, options = {})
     defaults = {
-      class_name: name.singularize.camelize,
+      class_name: name.to_s.singularize.camelize,
       primary_key: :id,
-      foreign_key: "#{self_class_name.downcase}_id".to_sym
+      foreign_key: "#{self_class_name.to_s.downcase}_id".to_sym
     }
 
     defaults.keys.each do |key|
@@ -50,19 +50,23 @@ end
 
 module Associatable
   def belongs_to(name, options = {})
-    options = BelongsToOptions.new(name, options)
+    self.assoc_options[name] = BelongsToOptions.new(name, options)
+
     define_method(name) do
+      options = self.assoc_options[name]
+      
       key = self.send(options.foreign_key)
       options.model_class.where(options.primary_key => key).first
     end
   end
 
   def has_many(name, options = {})
-    options = HasManyOptions.new(name, options)
+    self.assoc_options[name] = HasManyOptions.new(name, options)
     define_method(name) do
-      debugger
-      key = self.send(options.foreign_key)
-      options.model_class.where(options.primary_key => key).first
+      options = self.assoc_options[name]
+
+      key = self.send(options.primary_key)
+      options.model_class.where(options.foreign_key => key)
     end
   end
 
