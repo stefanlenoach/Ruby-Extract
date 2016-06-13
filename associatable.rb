@@ -20,7 +20,7 @@ end
 
 class BelongsToOptions < AssocOptions
   def initialize(name, options = {})
-    @class_name = options[:class_name] ||= name.to_s.camelcase
+    @class_name = options[:class_name]   ||= name.to_s.camelcase
     @primary_key = options[:primary_key] ||= :id
     @foreign_key = options[:foreign_key] ||= "#{name}_id".to_sym
   end

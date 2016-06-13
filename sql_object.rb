@@ -6,7 +6,7 @@ class SQLObject
   def self.columns
     return @columns if @columns
 
-    query = "SELECT * FROM #{table_name}"
+    query = "SELECT * FROM #{ table_name }"
 
     cols = DBConnection.execute2(query).first
     @columns = cols.map { |col_name| col_name.to_sym}
@@ -18,7 +18,7 @@ class SQLObject
         attributes[name]
       end
 
-      define_method("#{name}=") do |arg|
+      define_method("#{ name }=") do |arg|
         attributes[name] = arg
       end
     end
@@ -34,7 +34,7 @@ class SQLObject
   end
 
   def self.all
-    query = "SELECT * FROM #{table_name}"
+    query = "SELECT * FROM #{ table_name }"
     results = DBConnection.execute(query)
 
     self.parse_all(results)
@@ -45,7 +45,7 @@ class SQLObject
   end
 
   def self.find(id)
-    query = "SELECT * FROM #{table_name} WHERE id = #{id}"
+    query = "SELECT * FROM #{ table_name } WHERE id = #{ id }"
     result = DBConnection.execute(query)
 
     return nil if result.empty?
@@ -54,8 +54,8 @@ class SQLObject
 
   def initialize(params = {})
     params.each do |key, value|
-      raise "unknown attribute '#{key}'" unless self.class::columns.include?(key.to_sym)
-      send("#{key}=", value)
+      raise "unknown attribute '#{ key }'" unless self.class::columns.include?(key.to_sym)
+      send("#{ key }=", value)
     end
   end
 
@@ -78,16 +78,16 @@ class SQLObject
     col_names = columns.map(&:to_s).join(",")
     questions = (['?'] * columns.length).join(",")
 
-    query = "INSERT INTO #{self.class.table_name} (#{col_names}) VALUES (#{questions})"
+    query = "INSERT INTO #{ self.class.table_name } (#{ col_names }) VALUES (#{ questions })"
 
     DBConnection.execute(query , *attribute_values.drop(1))
     self.id = DBConnection.last_insert_row_id
   end
 
   def update
-    cols = self.class.columns.map { |col| "#{col} = ?"}.join(", ")
+    cols = self.class.columns.map { |col| "#{ col } = ?" }.join(", ")
 
-    new_query = "UPDATE #{self.class.table_name} SET #{cols} WHERE id = #{self.id}"
+    new_query = "UPDATE #{ self.class.table_name } SET #{ cols } WHERE id = #{ self.id }"
     DBConnection.execute(new_query , *attribute_values)
   end
 end
