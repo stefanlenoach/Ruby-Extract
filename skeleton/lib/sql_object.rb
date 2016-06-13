@@ -78,8 +78,7 @@ class SQLObject
     col_names = columns.map(&:to_s).join(",")
     questions = (['?'] * columns.length).join(",")
 
-    query = "INSERT INTO #{self.class.table_name} (#{col_names})
-    VALUES (#{questions})"
+    query = "INSERT INTO #{self.class.table_name} (#{col_names}) VALUES (#{questions})"
 
     DBConnection.execute(query , *attribute_values.drop(1))
     self.id = DBConnection.last_insert_row_id

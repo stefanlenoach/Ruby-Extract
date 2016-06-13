@@ -11,7 +11,6 @@ class DBConnection
     @db = SQLite3::Database.new(db_file_name)
     @db.results_as_hash = true
     @db.type_translation = true
-
     @db
   end
 
@@ -20,14 +19,12 @@ class DBConnection
       "rm '#{CATS_DB_FILE}'",
       "cat '#{CATS_SQL_FILE}' | sqlite3 '#{CATS_DB_FILE}'"
     ]
-
     commands.each { |command| `#{command}` }
     DBConnection.open(CATS_DB_FILE)
   end
 
   def self.instance
     reset if @db.nil?
-
     @db
   end
 

@@ -1,6 +1,7 @@
-require_relative '02_searchable'
+require_relative 'searchable'
 require 'active_support/inflector'
 require 'active_support/core_ext/string'
+
 
 class AssocOptions
   attr_accessor(
@@ -46,36 +47,4 @@ class HasManyOptions < AssocOptions
     end
 
   end
-end
-
-module Associatable
-  def belongs_to(name, options = {})
-    self.assoc_options[name] = BelongsToOptions.new(name, options)
-
-    define_method(name) do
-      options = self.assoc_options[name]
-      
-      key = self.send(options.foreign_key)
-      options.model_class.where(options.primary_key => key).first
-    end
-  end
-
-  def has_many(name, options = {})
-    self.assoc_options[name] = HasManyOptions.new(name, options)
-    define_method(name) do
-      options = self.assoc_options[name]
-
-      key = self.send(options.primary_key)
-      options.model_class.where(options.foreign_key => key)
-    end
-  end
-
-  def assoc_options
-    @assoc_options ||= {}
-    @assoc_options
-  end
-end
-
-class SQLObject
-  extend Associatable
 end
