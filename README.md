@@ -1,6 +1,6 @@
 # Ruby-Extract
 
-## Object Relational Mapping Inspired by Active Record
+## Object Relational Mapping
 
 Uses Ruby to generate SQL query code and extract data from database via meta-programming.
 
@@ -41,7 +41,7 @@ Human.find(1).methods
 - ActiveSupport::Inflector
 - SQLite3
 
-## ActiveRecord Methods Available
+## Methods Available
 - ::all
 ```
 Cat.all # => Returns an array of all Cat objects

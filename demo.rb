@@ -1,4 +1,4 @@
-require_relative 'associatable'
+require './lib/associatable'
 
 class Cat < SQLObject
   self.table_name = "cats"
