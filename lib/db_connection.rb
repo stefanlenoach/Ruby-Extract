@@ -3,8 +3,8 @@ require 'sqlite3'
 PRINT_QUERIES = ENV['PRINT_QUERIES'] == 'true'
 
 ROOT_FOLDER   = File.join(File.dirname(__FILE__), '.')
-CATS_SQL_FILE = File.join(ROOT_FOLDER, 'cats.sql')
-CATS_DB_FILE  = File.join(ROOT_FOLDER, 'cats.db')
+CATS_SQL_FILE = File.join(ROOT_FOLDER, '../db/cats.sql')
+CATS_DB_FILE  = File.join(ROOT_FOLDER, '../db/cats.db')
 
 class DBConnection
   def self.open(db_file_name)
