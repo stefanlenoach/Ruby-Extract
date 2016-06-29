@@ -1,7 +1,7 @@
 require './lib/associatable'
 
-class Cat < SQLObject
-  self.table_name = "cats"
+class Turtle < SQLObject
+  self.table_name = "turtles"
 
   belongs_to :human, foreign_key: :owner_id
   has_one_through :house, :human, :house
@@ -13,7 +13,7 @@ class Human < SQLObject
   self.table_name = "humans"
 
   belongs_to :house
-  has_many :cats, foreign_key: :owner_id
+  has_many :turtles, foreign_key: :owner_id
 
   self.finalize!
 end
