@@ -3,8 +3,8 @@ require 'sqlite3'
 PRINT_QUERIES = ENV['PRINT_QUERIES'] == 'true'
 
 ROOT_FOLDER   = File.join(File.dirname(__FILE__), '.')
-TURTLES_SQL_FILE = File.join(ROOT_FOLDER, '../db/turtles.sql')
-TURTLES_DB_FILE  = File.join(ROOT_FOLDER, '../db/turtles.db')
+TURTLES_SQL_FILE = File.join(ROOT_FOLDER, '../turtles.sql')
+TURTLES_DB_FILE  = File.join(ROOT_FOLDER, '../turtles.db')
 
 class DBConnection
   def self.open(db_file_name)
